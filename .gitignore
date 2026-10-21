@@ -4,3 +4,6 @@ __pycache__/
 models/*.onnx
 .env
 .DS_Store
+
+# graphify (indeks kode lokal)
+graphify-out/
