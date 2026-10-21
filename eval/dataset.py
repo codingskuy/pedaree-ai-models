@@ -79,7 +79,7 @@ def buat_baris(n: int = JUMLAH_BARIS, seed: int = SEED) -> list[dict]:
 def tulis(path: Path = BERKAS) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=KOLOM)
+        w = csv.DictWriter(f, fieldnames=KOLOM, lineterminator="\n")
         w.writeheader()
         w.writerows(buat_baris())
     return path
