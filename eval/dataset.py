@@ -95,5 +95,20 @@ def baca(path: Path = BERKAS) -> list[dict]:
         ]
 
 
+
+def pisah(baris: list[dict], porsi_uji: float = 0.3, seed: int = SEED) -> tuple[list[dict], list[dict]]:
+    """Pisah latih/uji deterministik, terstratifikasi menurut label."""
+    rng = np.random.default_rng(seed + 1)
+    latih: list[dict] = []
+    uji: list[dict] = []
+    for label in (0, 1):
+        kelompok = [r for r in baris if r["terbuang"] == label]
+        idx = rng.permutation(len(kelompok))
+        n_uji = int(round(len(kelompok) * porsi_uji))
+        uji += [kelompok[i] for i in idx[:n_uji]]
+        latih += [kelompok[i] for i in idx[n_uji:]]
+    return sorted(latih, key=lambda r: r["id"]), sorted(uji, key=lambda r: r["id"])
+
+
 if __name__ == "__main__":
     print(f"dataset sintetis tertulis: {tulis()}")

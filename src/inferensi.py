@@ -1,39 +1,48 @@
-"""Inferensi risiko kedaluwarsa memakai model ONNX ringan."""
+"""Inferensi risiko kedaluwarsa memakai model ONNX ringan.
+
+Kontrak masukan/keluaran resmi untuk API Rust ditetapkan di PDR-AI-004.
+"""
+from __future__ import annotations
+
+from datetime import date, timedelta
 from pathlib import Path
 
 import numpy as np
 import onnxruntime as ort
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+from src import fitur, versi
+from src.baseline import skor_baseline
+
+MODEL = Path(__file__).resolve().parent.parent / "models" / versi.BERKAS_ONNX
+_sesi: dict[Path, ort.InferenceSession] = {}
 
 
 class FiturItem(BaseModel):
-    sisa_hari: float
-    laju_pakai_harian: float
-    bobot_resep: float = 0.0
+    sisa_hari: int = Field(ge=0, description="hari tersisa sampai kedaluwarsa (batch KEDALUWARSA tidak dinilai model)")
+    jumlah_aktif: float = Field(gt=0)
+    laju_pakai_harian: float = Field(ge=0)
+    bobot_resep: float = Field(default=0.0, ge=0.0, le=1.0)
 
 
-MODEL = Path(__file__).resolve().parent.parent / "models" / "kedaluwarsa-v1.onnx"
+def _sesi_onnx(jalur: Path) -> ort.InferenceSession:
+    if jalur not in _sesi:
+        _sesi[jalur] = ort.InferenceSession(str(jalur), providers=["CPUExecutionProvider"])
+    return _sesi[jalur]
 
 
-def skor_risiko(fitur: FiturItem) -> float:
-    if not MODEL.exists():
-        # Aturan cadangan bila artefak belum dibangun: heuristik murni.
-        if fitur.sisa_hari < 0:
-            return 1.0
-        if fitur.sisa_hari <= 3:
-            return 0.85
-        if fitur.sisa_hari <= 7:
-            return 0.6
-        return 0.2
-    sesi = ort.InferenceSession(str(MODEL))
-    masukan = np.array(
-        [[fitur.sisa_hari, fitur.laju_pakai_harian, fitur.bobot_resep]],
+def skor_risiko(item: FiturItem, jalur: Path = MODEL) -> float:
+    """P(batch terbuang) 0..1. Tanpa artefak model, jatuh ke skor baseline SOP (deterministik)."""
+    if not jalur.exists():
+        hari = date(2000, 1, 1)
+        return skor_baseline(hari + timedelta(days=item.sisa_hari), hari)
+    x = np.array(
+        [fitur.vektor(item.sisa_hari, item.jumlah_aktif, item.laju_pakai_harian, item.bobot_resep)],
         dtype=np.float32,
     )
-    keluar = sesi.run(None, {sesi.get_inputs()[0].name: masukan})
-    return float(keluar[1][0][1])
+    return float(_sesi_onnx(jalur).run(None, {"masukan": x})[1][0][1])
 
 
 if __name__ == "__main__":
-    contoh = FiturItem(sisa_hari=2, laju_pakai_harian=1.0, bobot_resep=0.9)
+    contoh = FiturItem(sisa_hari=2, jumlah_aktif=500, laju_pakai_harian=40.0, bobot_resep=0.9)
     print(f"skor risiko: {skor_risiko(contoh):.2f}")
