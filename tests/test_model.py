@@ -78,12 +78,12 @@ def test_split_tidak_bocor_dan_deterministik():
     assert len(a_latih) + len(a_uji) == len(baris)
 
 
-def test_inferensi_berurutan_risiko_naik_saat_stok_besar_dan_waktu_singkat(artefak):
+def test_skor_risiko_tingkat_rendah_naik_saat_stok_besar_dan_waktu_singkat(artefak):
     aman = inferensi.FiturItem(sisa_hari=2, jumlah_aktif=100, laju_pakai_harian=100)
     bahaya = inferensi.FiturItem(sisa_hari=2, jumlah_aktif=2000, laju_pakai_harian=10)
     assert inferensi.skor_risiko(bahaya, artefak) > inferensi.skor_risiko(aman, artefak)
 
 
-def test_inferensi_tanpa_artefak_jatuh_ke_baseline(tmp_path):
+def test_skor_risiko_tanpa_artefak_jatuh_ke_baseline(tmp_path):
     s = inferensi.skor_risiko(inferensi.FiturItem(sisa_hari=2, jumlah_aktif=10, laju_pakai_harian=1), tmp_path / "tidak-ada.onnx")
     assert s == 0.85  # SEGERA
