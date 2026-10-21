@@ -24,6 +24,7 @@ Kontrak lintas divisi (detail: `docs/MODUL-PANTRY-RESEP.md`):
 
 - Python 3.12.8
 - scikit-learn 1.6.1
+- skl2onnx 1.19.1, protobuf 5.29.5 (lihat ADR-0002)
 - onnxruntime 1.21.0
 - numpy 2.0.2
 - pydantic 2.10.6
@@ -34,7 +35,8 @@ Lihat `requirements.txt` sebagai sumber kebenaran versi.
 
 ```text
 src/               kode latih dan inferensi
-models/            artefak model berekstensi .onnx (contoh kecil)
+models/            artefak .onnx hasil `src.latih` (tidak di-commit)
+eval/              dataset sintetis, evaluasi, dan metrics.md
 tests/             uji perilaku model
 docs/              arsitektur dan kontrak modul
 ```
@@ -45,8 +47,10 @@ docs/              arsitektur dan kontrak modul
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python -m src.latih
-python -m src.inferensi --contoh
+python -m pytest -q
+python -m eval.dataset            # (opsional) regenerasi dataset sintetis
+python -m src.latih               # -> models/kedaluwarsa-v1.onnx
+python -m eval.evaluasi --gerbang # -> eval/metrics.md; kode 1 bila lebih buruk dari baseline
 ```
 
 ## CI

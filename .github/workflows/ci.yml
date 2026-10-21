@@ -9,3 +9,5 @@ jobs:
         with: { python-version: "3.12.8" }
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
+      - run: python -m src.latih
+      - run: python -m eval.evaluasi --gerbang --keluaran "$RUNNER_TEMP/metrics.md"
