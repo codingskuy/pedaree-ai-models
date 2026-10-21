@@ -5,9 +5,10 @@ TownHall: https://github.com/Coding-Skuy/Pedaree-TownHall
 ## Lapisan
 
 1. Fitur: sisa hari kedaluwarsa, laju pakai dari mutasi, konteks `recipe_id`.
-2. Model: regresi logistik scikit-learn yang diekspor ke ONNX.
+2. Model: GradientBoosting scikit-learn yang diekspor ke ONNX (ADR-0002, `docs/MODEL-CARD.md`).
 3. Inferensi: `src/inferensi.py` memuat `models/kedaluwarsa-v1.onnx` lewat
-   onnxruntime dan mengembalikan skor risiko 0 sampai 1.
+   onnxruntime dan mengembalikan skor risiko 0 sampai 1 sesuai kontrak
+   `docs/kontrak/INFERENSI.md` (ADR-0003). Status SOP dan urutan FEFO tetap dari `src/baseline.py`.
 
 ## Alur utama
 
