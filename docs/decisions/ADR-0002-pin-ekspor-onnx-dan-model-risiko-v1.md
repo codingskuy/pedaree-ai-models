@@ -18,3 +18,7 @@ Tiket PDR-AI-003 (issue #3). ADR-0001 mengunci `onnx==1.18.0` + `skl2onnx==1.18.
 - Model hanya menambah skor risiko; ambang SOP dan urutan FEFO tetap milik `src/baseline.py`/TownHall.
 - Perubahan fitur, urutan keluaran, atau format = bump `MODEL_VERSI` + ADR baru (kontrak I/O untuk API Rust: PDR-AI-004).
 - Semua metrik saat ini berasal dari dataset SINTETIS; tidak boleh dikutip sebagai kinerja produksi.
+
+## Addendum 2026-10-21 — kunci transitif
+
+Keputusan manusia: seluruh dependensi (langsung dan transitif) dikunci dengan `==` di `requirements.txt`, sesuai `pip freeze` dari venv bersih Python 3.12 (versi CI) yang lolos `pip check`, `pytest` (33 lulus), `python -m src.latih`, dan `python -m eval.evaluasi --gerbang` (LOLOS). Daftar persis ada di `requirements.txt`; pemasangan ulang dari berkas itu menghasilkan `pip freeze` identik. Menaikkan versi apa pun = ulangi verifikasi yang sama dan catat di ADR baru.
