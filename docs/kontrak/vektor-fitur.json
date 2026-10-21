@@ -1,0 +1,87 @@
+{
+  "namaFitur": [
+    "sisa_hari",
+    "laju_pakai_harian",
+    "bobot_resep",
+    "hari_habis_dipakai",
+    "rasio_habis_vs_sisa"
+  ],
+  "toleransi": 0.0001,
+  "kasus": [
+    {
+      "masukan": {
+        "sisaHari": 0,
+        "jumlahAktif": 500,
+        "lajuPakaiHarian": 40,
+        "bobotResep": 0.9
+      },
+      "fitur": [
+        0.0,
+        40.0,
+        0.9,
+        12.5,
+        12.5
+      ]
+    },
+    {
+      "masukan": {
+        "sisaHari": 2,
+        "jumlahAktif": 650,
+        "lajuPakaiHarian": 15,
+        "bobotResep": 0.9
+      },
+      "fitur": [
+        2.0,
+        15.0,
+        0.9,
+        43.333333,
+        14.444444
+      ]
+    },
+    {
+      "masukan": {
+        "sisaHari": 3,
+        "jumlahAktif": 2,
+        "lajuPakaiHarian": 0.5,
+        "bobotResep": 0.4
+      },
+      "fitur": [
+        3.0,
+        0.5,
+        0.4,
+        4.0,
+        1.0
+      ]
+    },
+    {
+      "masukan": {
+        "sisaHari": 7,
+        "jumlahAktif": 5000,
+        "lajuPakaiHarian": 250,
+        "bobotResep": 0.0
+      },
+      "fitur": [
+        7.0,
+        250.0,
+        0.0,
+        20.0,
+        2.5
+      ]
+    },
+    {
+      "masukan": {
+        "sisaHari": 14,
+        "jumlahAktif": 100,
+        "lajuPakaiHarian": 0,
+        "bobotResep": 1.0
+      },
+      "fitur": [
+        14.0,
+        0.0,
+        1.0,
+        365.0,
+        24.333333
+      ]
+    }
+  ]
+}

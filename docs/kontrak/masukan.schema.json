@@ -1,0 +1,170 @@
+{
+  "$defs": {
+    "BatchMasukan": {
+      "additionalProperties": false,
+      "description": "Satu StokBatch aktif + fitur konteks yang dihitung backend.",
+      "properties": {
+        "batchId": {
+          "examples": [
+            "btc_01J9Z8QK2M4C"
+          ],
+          "pattern": "^btc_[0-9A-Za-z]{4,40}$",
+          "title": "Batchid",
+          "type": "string"
+        },
+        "pantryItemId": {
+          "examples": [
+            "itm_01J9Z8QK2M4A"
+          ],
+          "pattern": "^itm_[0-9A-Za-z]{4,40}$",
+          "title": "Pantryitemid",
+          "type": "string"
+        },
+        "nama": {
+          "maxLength": 60,
+          "minLength": 3,
+          "title": "Nama",
+          "type": "string"
+        },
+        "kategori": {
+          "$ref": "#/$defs/Kategori"
+        },
+        "satuan": {
+          "$ref": "#/$defs/Satuan",
+          "description": "Satuan `jumlahAktif` dan `lajuPakaiHarian`; dinormalkan ke satuan kanonis."
+        },
+        "jumlahAktif": {
+          "description": "Sisa batch; 0 = habis (terkunci dari FEFO).",
+          "minimum": 0.0,
+          "title": "Jumlahaktif",
+          "type": "number"
+        },
+        "tanggalMasuk": {
+          "format": "date",
+          "title": "Tanggalmasuk",
+          "type": "string"
+        },
+        "tanggalKedaluwarsa": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "null = tidak mudah busuk (di luar SOP).",
+          "title": "Tanggalkedaluwarsa"
+        },
+        "lajuPakaiHarian": {
+          "default": 0.0,
+          "description": "ASUMSI: rerata pemakaian per hari item ini dalam `satuan`, dihitung backend dari MutasiStok PAKAI (mis. 14 hari terakhir).",
+          "minimum": 0.0,
+          "title": "Lajupakaiharian",
+          "type": "number"
+        },
+        "bobotResep": {
+          "default": 0.0,
+          "description": "0..1, seberapa sering bahan muncul di resep Pawonee (konteks).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Bobotresep",
+          "type": "number"
+        },
+        "recipeId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rujukan resep Pawonee; hanya konteks, boleh null.",
+          "title": "Recipeid"
+        }
+      },
+      "required": [
+        "batchId",
+        "pantryItemId",
+        "nama",
+        "kategori",
+        "satuan",
+        "jumlahAktif",
+        "tanggalMasuk"
+      ],
+      "title": "BatchMasukan",
+      "type": "object"
+    },
+    "Kategori": {
+      "enum": [
+        "SAYUR",
+        "BUMBU",
+        "BUAH",
+        "PROTEIN",
+        "KERING",
+        "CAIR",
+        "BEKU",
+        "SISA"
+      ],
+      "title": "Kategori",
+      "type": "string"
+    },
+    "Satuan": {
+      "description": "13 satuan baku (sumber sah: inventori/20-satuan-hortikultura.md).",
+      "enum": [
+        "gram",
+        "kg",
+        "ml",
+        "liter",
+        "sdm",
+        "sdt",
+        "pcs",
+        "siung",
+        "buah",
+        "ikat",
+        "batang",
+        "bonggol",
+        "lembar"
+      ],
+      "title": "Satuan",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "skemaVersi": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Skemaversi",
+      "type": "string"
+    },
+    "hariIni": {
+      "description": "Tanggal kalender WIB acuan perhitungan sisa hari.",
+      "format": "date",
+      "title": "Hariini",
+      "type": "string"
+    },
+    "batch": {
+      "items": {
+        "$ref": "#/$defs/BatchMasukan"
+      },
+      "maxItems": 2000,
+      "minItems": 1,
+      "title": "Batch",
+      "type": "array"
+    }
+  },
+  "required": [
+    "hariIni",
+    "batch"
+  ],
+  "title": "PermintaanInferensi",
+  "type": "object",
+  "x-skema-versi": "1.0",
+  "x-model-versi": "1.0.0"
+}

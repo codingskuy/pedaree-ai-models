@@ -1,0 +1,51 @@
+{
+  "skemaVersi": "1.0",
+  "hariIni": "2026-10-21",
+  "model": {
+    "nama": "risiko-kedaluwarsa",
+    "versi": "1.0.0",
+    "sumberModel": "onnx"
+  },
+  "hasil": [
+    {
+      "batchId": "btc_01J9Z8QK2M4C",
+      "pantryItemId": "itm_01J9Z8QK2M4A",
+      "statusSop": "SEGERA",
+      "sisaHari": 2,
+      "skorRisiko": 0.9853,
+      "sumberSkor": "model",
+      "urutanPakai": 1,
+      "terkunci": false
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4D",
+      "pantryItemId": "itm_01J9Z8QK2M4A",
+      "statusSop": "AMAN",
+      "sisaHari": 15,
+      "skorRisiko": 0.8776,
+      "sumberSkor": "model",
+      "urutanPakai": 2,
+      "terkunci": false
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4G",
+      "pantryItemId": "itm_01J9Z8QK2M4H",
+      "statusSop": null,
+      "sisaHari": null,
+      "skorRisiko": 0.0,
+      "sumberSkor": "baseline",
+      "urutanPakai": 1,
+      "terkunci": false
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4E",
+      "pantryItemId": "itm_01J9Z8QK2M4F",
+      "statusSop": "KEDALUWARSA",
+      "sisaHari": -1,
+      "skorRisiko": 1.0,
+      "sumberSkor": "baseline",
+      "urutanPakai": null,
+      "terkunci": true
+    }
+  ]
+}

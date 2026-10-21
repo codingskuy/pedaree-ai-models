@@ -1,0 +1,162 @@
+{
+  "$defs": {
+    "HasilBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "batchId": {
+          "title": "Batchid",
+          "type": "string"
+        },
+        "pantryItemId": {
+          "title": "Pantryitemid",
+          "type": "string"
+        },
+        "statusSop": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatusSop"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Dari baseline SOP (terkunci). null bila tanggalKedaluwarsa null."
+        },
+        "sisaHari": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Hari tersisa; null bila tanggalKedaluwarsa null; negatif bila lewat.",
+          "title": "Sisahari"
+        },
+        "skorRisiko": {
+          "description": "P(batch terbuang). Hanya penambah informasi; tidak mengubah status/urutan.",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Skorrisiko",
+          "type": "number"
+        },
+        "sumberSkor": {
+          "$ref": "#/$defs/SumberSkor",
+          "description": "`baseline` untuk batch KEDALUWARSA (1.0), tanggal null (0.0), atau tanpa model."
+        },
+        "urutanPakai": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Peringkat FEFO (1 = pakai dulu) di dalam item yang sama; null bila terkunci (KEDALUWARSA atau jumlah 0).",
+          "title": "Urutanpakai"
+        },
+        "terkunci": {
+          "description": "true bila KEDALUWARSA atau jumlahAktif = 0: tidak ikut FEFO (hanya bisa dibuang).",
+          "title": "Terkunci",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "batchId",
+        "pantryItemId",
+        "statusSop",
+        "sisaHari",
+        "skorRisiko",
+        "sumberSkor",
+        "urutanPakai",
+        "terkunci"
+      ],
+      "title": "HasilBatch",
+      "type": "object"
+    },
+    "InfoModel": {
+      "additionalProperties": false,
+      "properties": {
+        "nama": {
+          "title": "Nama",
+          "type": "string"
+        },
+        "versi": {
+          "title": "Versi",
+          "type": "string"
+        },
+        "sumberModel": {
+          "description": "`baseline` bila artefak ONNX tidak tersedia.",
+          "enum": [
+            "onnx",
+            "baseline"
+          ],
+          "title": "Sumbermodel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "nama",
+        "versi",
+        "sumberModel"
+      ],
+      "title": "InfoModel",
+      "type": "object"
+    },
+    "StatusSop": {
+      "enum": [
+        "AMAN",
+        "WASPADA",
+        "SEGERA",
+        "HARI_INI",
+        "KEDALUWARSA"
+      ],
+      "title": "StatusSop",
+      "type": "string"
+    },
+    "SumberSkor": {
+      "enum": [
+        "model",
+        "baseline"
+      ],
+      "title": "SumberSkor",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "skemaVersi": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Skemaversi",
+      "type": "string"
+    },
+    "hariIni": {
+      "format": "date",
+      "title": "Hariini",
+      "type": "string"
+    },
+    "model": {
+      "$ref": "#/$defs/InfoModel"
+    },
+    "hasil": {
+      "description": "Terurut FEFO global: kedaluwarsa terdekat dulu, tanggal null (FIFO) setelahnya, batch terkunci terakhir.",
+      "items": {
+        "$ref": "#/$defs/HasilBatch"
+      },
+      "title": "Hasil",
+      "type": "array"
+    }
+  },
+  "required": [
+    "hariIni",
+    "model",
+    "hasil"
+  ],
+  "title": "HasilInferensi",
+  "type": "object",
+  "x-skema-versi": "1.0",
+  "x-model-versi": "1.0.0"
+}

@@ -1,0 +1,58 @@
+{
+  "skemaVersi": "1.0",
+  "hariIni": "2026-10-21",
+  "batch": [
+    {
+      "batchId": "btc_01J9Z8QK2M4C",
+      "pantryItemId": "itm_01J9Z8QK2M4A",
+      "nama": "Bawang Merah",
+      "kategori": "BUMBU",
+      "satuan": "gram",
+      "jumlahAktif": 650.0,
+      "tanggalMasuk": "2026-09-28",
+      "tanggalKedaluwarsa": "2026-10-23",
+      "lajuPakaiHarian": 15.0,
+      "bobotResep": 0.9,
+      "recipeId": null
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4D",
+      "pantryItemId": "itm_01J9Z8QK2M4A",
+      "nama": "Bawang Merah",
+      "kategori": "BUMBU",
+      "satuan": "gram",
+      "jumlahAktif": 500.0,
+      "tanggalMasuk": "2026-10-15",
+      "tanggalKedaluwarsa": "2026-11-05",
+      "lajuPakaiHarian": 15.0,
+      "bobotResep": 0.9,
+      "recipeId": null
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4E",
+      "pantryItemId": "itm_01J9Z8QK2M4F",
+      "nama": "Bayam",
+      "kategori": "SAYUR",
+      "satuan": "ikat",
+      "jumlahAktif": 2.0,
+      "tanggalMasuk": "2026-10-18",
+      "tanggalKedaluwarsa": "2026-10-20",
+      "lajuPakaiHarian": 0.5,
+      "bobotResep": 0.4,
+      "recipeId": null
+    },
+    {
+      "batchId": "btc_01J9Z8QK2M4G",
+      "pantryItemId": "itm_01J9Z8QK2M4H",
+      "nama": "Garam",
+      "kategori": "KERING",
+      "satuan": "gram",
+      "jumlahAktif": 250.0,
+      "tanggalMasuk": "2026-08-01",
+      "tanggalKedaluwarsa": null,
+      "lajuPakaiHarian": 3.0,
+      "bobotResep": 1.0,
+      "recipeId": null
+    }
+  ]
+}
